@@ -313,7 +313,7 @@ a reference in APA or BibTeX form. Each release is archived on
 and in the [`CHANGELOG`](CHANGELOG.md). In a note, cite it as:
 
 > Jeff O'Brien, *MIRL Aftermath: a condition dossier for damaged heritage*,
-> version 1.0.0, Material / Image Research Lab, UC Santa Barbara, 2026.
+> version 1.0.1, Material / Image Research Lab, UC Santa Barbara, 2026.
 
 ---
 

@@ -4,6 +4,13 @@ MIRL Aftermath keeps its history the way a survey keeps its record: nothing
 erased, each change dated. Versions follow [semantic versioning](https://semver.org);
 dossier files from any earlier version load cleanly in any later one.
 
+## 1.0.1 (2026-06-17)
+
+- The repository is archived on [Zenodo](https://zenodo.org) from this release
+  onward: each release mints a DOI, and a concept DOI resolves to the latest
+  version, so the tool can be cited the way it asks others to cite their
+  dossiers.
+
 ## 1.0.0 (2026-06-17)
 
 First release: a local-first tool that turns loose before-and-after photographs
