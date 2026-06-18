@@ -7,9 +7,10 @@ dossier files from any earlier version load cleanly in any later one.
 ## 1.0.1 (2026-06-17)
 
 - The repository is archived on [Zenodo](https://zenodo.org) from this release
-  onward: each release mints a DOI, and a concept DOI resolves to the latest
-  version, so the tool can be cited the way it asks others to cite their
-  dossiers.
+  onward: each release mints a DOI, and the concept DOI
+  [10.5281/zenodo.20750368](https://doi.org/10.5281/zenodo.20750368) always
+  resolves to the latest version, so the tool can be cited the way it asks
+  others to cite their dossiers.
 
 ## 1.0.0 (2026-06-17)
 

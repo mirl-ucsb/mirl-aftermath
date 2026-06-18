@@ -308,12 +308,14 @@ mirl-aftermath/
 
 This repository carries a [`CITATION.cff`](CITATION.cff) file, so GitHub's
 **Cite this repository** button (in the sidebar of the repo page) will give you
-a reference in APA or BibTeX form. Each release is archived on
-[Zenodo](https://zenodo.org) with a DOI; once minted, the DOI is recorded here
-and in the [`CHANGELOG`](CHANGELOG.md). In a note, cite it as:
+a reference in APA or BibTeX form. Every release is archived on
+[Zenodo](https://doi.org/10.5281/zenodo.20750368); the DOI
+`10.5281/zenodo.20750368` always resolves to the latest version. A
+[`CHANGELOG`](CHANGELOG.md) records each release. In a note, cite it as:
 
 > Jeff O'Brien, *MIRL Aftermath: a condition dossier for damaged heritage*,
-> version 1.0.1, Material / Image Research Lab, UC Santa Barbara, 2026.
+> version 1.0.1, Material / Image Research Lab, UC Santa Barbara, 2026,
+> https://doi.org/10.5281/zenodo.20750368.
 
 ---
 

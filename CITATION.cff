@@ -22,6 +22,7 @@ authors:
       Architecture, University of California, Santa Barbara
 version: "1.0.1"
 date-released: "2026-06-17"
+doi: 10.5281/zenodo.20750368
 license: MIT
 repository-code: "https://github.com/mirl-ucsb/mirl-aftermath"
 url: "https://mirl-ucsb.github.io/mirl-aftermath/"
