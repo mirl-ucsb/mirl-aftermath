@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software in your research or teaching, please cite it as below."
+type: software
+title: "MIRL Aftermath: a condition dossier for damaged heritage"
+abstract: >-
+  A no-build, local-first tool that turns loose before-and-after photographs
+  into a standardized, court- and UNESCO-ready condition dossier: one site, the
+  events that harmed it, and dated assessments, each a condition report with a
+  before and after photograph optionally registered by a fitted homography so
+  the damage reads at one viewpoint. Damage typology and severity from
+  ICOMOS/ICCROM and satellite-assessment vocabularies, sha-256 fingerprints and
+  provenance on every source image, consent states that withhold restricted
+  photographs and unsafe coordinates from every export, a curtain/onion/blink
+  compare view, and a printed dossier with numbered figures and a sources
+  appendix. Arabic and right-to-left ready. Runs in the browser, no build.
+authors:
+  - family-names: "O'Brien"
+    given-names: "Jeff"
+    email: "jeffobrien@ucsb.edu"
+    affiliation: >-
+      Material / Image Research Lab, Department of History of Art &
+      Architecture, University of California, Santa Barbara
+version: "1.0.0"
+date-released: "2026-06-17"
+license: MIT
+repository-code: "https://github.com/mirl-ucsb/mirl-aftermath"
+url: "https://mirl-ucsb.github.io/mirl-aftermath/"
+keywords:
+  - cultural heritage
+  - heritage at risk
+  - damage assessment
+  - condition report
+  - conservation
+  - rephotography
+  - homography
+  - digital humanities
+  - human rights documentation
+  - minimal computing
