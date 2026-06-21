@@ -2,6 +2,8 @@
 
 **A condition dossier for damaged heritage.**
 
+> **In active development.** This tool is being built and refined in the open. Its features, file formats, and interface may still change, and some parts may be incomplete or rough. Please keep your own copies of anything important, and reports of whatever breaks are welcome.
+
 MIRL Aftermath is a free, local-first tool that turns a folder of loose
 before-and-after photographs into a standardized condition dossier: the kind
 of document a court, a tribunal, or a UNESCO or ALIPH submission can rest on,
