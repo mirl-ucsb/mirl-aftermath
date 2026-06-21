@@ -4,3 +4,6 @@ __pycache__/
 
 # build-instruction doc, not part of the published tool
 HANDOFF.md
+
+# Local chat handoff notes, not part of the published tool
+chat-handoff-*.md
