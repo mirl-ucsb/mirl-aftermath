@@ -129,8 +129,13 @@ AM.App = (function () {
     const n = (x, one, many) => x + ' ' + (x === 1 ? one : (many || one + 's'));
     const line = (box, txt) => box.append(U.h('div', { class: 'rl-line' }, txt));
     const overlay = U.h('div', { class: 'release-overlay' });
+    const prev = document.activeElement;
     function onEsc(ev) { if (ev.key === 'Escape') close(); }
-    const close = () => { overlay.remove(); document.removeEventListener('keydown', onEsc); };
+    const close = () => {
+      overlay.remove();
+      document.removeEventListener('keydown', onEsc);
+      try { if (prev && prev.focus) prev.focus(); } catch (e) {}
+    };
     const body = U.h('div', { class: 'release-summary' });
     body.append(U.h('p', { class: 'rl-intro' },
       'This is what the ' + label + ' carries out of the working dossier. Restricted photographs and unsafe coordinates stay here.'));
@@ -150,11 +155,25 @@ AM.App = (function () {
     const go = U.h('button', { class: 'btn primary' }, 'Export the ' + label);
     go.addEventListener('click', () => { close(); onProceed(); });
     acts.append(cancel, go);
-    overlay.append(U.h('div', { class: 'release-dialog' },
-      U.h('h3', null, 'Before the ' + label + ' leaves'), body, acts));
+    const title = U.h('h3', { id: 'rl-dlg-title' }, 'Before the ' + label + ' leaves');
+    const dlg = U.h('div', { class: 'release-dialog' }, title, body, acts);
+    dlg.setAttribute('role', 'dialog');
+    dlg.setAttribute('aria-modal', 'true');
+    dlg.setAttribute('aria-labelledby', 'rl-dlg-title');
+    overlay.append(dlg);
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    /* trap Tab within the dialog so keyboard focus cannot stray behind it */
+    overlay.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const f = Array.from(dlg.querySelectorAll('button')).filter(b => b.offsetParent !== null);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
     document.addEventListener('keydown', onEsc);
     document.body.append(overlay);
+    setTimeout(() => cancel.focus(), 40);
   }
 
   /* ---------- boot ---------- */
