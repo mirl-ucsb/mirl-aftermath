@@ -404,10 +404,10 @@ AM.Sheets = (function () {
 
     const sevPick = U.h('div', { class: 'marks-pick' });
     V.SEVERITY.forEach(sv => {
-      const b = U.h('button', { class: 'mark ' + sv.cls + (a.severity === sv.key ? ' on' : ''), title: sv.label }, cap(sv.key));
+      const b = U.h('button', { class: 'mark ' + sv.cls + (a.severity === sv.key ? ' on' : ''), title: sv.label, 'aria-pressed': a.severity === sv.key ? 'true' : 'false' }, cap(sv.key));
       b.addEventListener('click', () => {
         a.severity = sv.key;
-        sevPick.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+        sevPick.querySelectorAll('button').forEach(x => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
         AM.App.changed(a, true);
       });
       sevPick.append(b);

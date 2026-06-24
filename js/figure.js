@@ -334,7 +334,7 @@ AM.Figure = (function () {
   }
   function updateModeButtons() {
     if (!ed.root) return;
-    ed.root.querySelectorAll('.fig-modes button').forEach(b => b.classList.toggle('on', b.dataset.figmode === ed.mode));
+    ed.root.querySelectorAll('.fig-modes button').forEach(b => { const on = b.dataset.figmode === ed.mode; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
     const cmp = ed.root.querySelector('.fig-modes button[data-figmode="compare"]');
     if (cmp) cmp.disabled = !ed.a.align.H;
   }
