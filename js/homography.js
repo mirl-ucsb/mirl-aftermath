@@ -92,7 +92,8 @@ AM.Homography = (function () {
     const Hn = [z[0], z[1], z[2], z[3], z[4], z[5], z[6], z[7], 1];
     let H = mat3mul(mat3inv(nd.T), mat3mul(Hn, ns.T));
     const inv = 1 / H[8];
-    return H.map(v => v * inv);
+    const out = H.map(v => v * inv);
+    return out.every(Number.isFinite) ? out : null;
   }
 
   function residualRMS(H, src, dst) {

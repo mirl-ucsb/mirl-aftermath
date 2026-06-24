@@ -112,18 +112,23 @@ AM.Figure = (function () {
        it with the canvas downscale so before-pixels land in canvas pixels */
     const Sk = [k, 0, 0, 0, k, 0, 0, 0, 1];
     const Hc = H.mat3mul(Sk, al.H);
+    /* the before image embedded in the file may be downscaled below natW; map
+       its intrinsic pixels into natW-space first so the warp registers */
+    const bw = before.naturalWidth || a.before.natW || 1, bh = before.naturalHeight || a.before.natH || 1;
+    const Sb = [(a.before.natW || bw) / bw, 0, 0, 0, (a.before.natH || bh) / bh, 0, 0, 0, 1];
+    const Hcb = H.mat3mul(Hc, Sb);
     ctx.fillStyle = '#e8e6dd'; ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(after, 0, 0, cw, ch);
     const mode = al.compare === 'onion' ? 'onion' : 'curtain';
     const split = typeof al.split === 'number' ? al.split : 0.5;
     if (mode === 'onion') {
       ctx.globalAlpha = typeof al.opacity === 'number' ? al.opacity : 0.5;
-      warp(ctx, before, Hc, a.before.natW || before.naturalWidth, a.before.natH || before.naturalHeight);
+      warp(ctx, before, Hcb, bw, bh);
       ctx.globalAlpha = 1;
     } else {
       ctx.save();
       ctx.beginPath(); ctx.rect(split * cw, 0, cw, ch); ctx.clip();
-      warp(ctx, before, Hc, a.before.natW || before.naturalWidth, a.before.natH || before.naturalHeight);
+      warp(ctx, before, Hcb, bw, bh);
       ctx.restore();
       ctx.strokeStyle = '#25231c'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(Math.round(split * cw) + 0.5, 0); ctx.lineTo(Math.round(split * cw) + 0.5, ch); ctx.stroke();
