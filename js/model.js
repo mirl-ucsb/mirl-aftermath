@@ -200,8 +200,18 @@ AM.Model = (function () {
 
   /* ---------- one JSON document per dossier ---------- */
   function serialize(publicOnly) {
-    const src = publicOnly ? publicClone() : { project: S.project };
-    return { format: 'mirl-aftermath', version: 1, project: src.project };
+    const project = publicOnly ? publicClone().project : workingProject();
+    return { format: 'mirl-aftermath', version: 1, project };
+  }
+
+  /* the working file, minus the transient registered-overlay image */
+  function workingProject() {
+    return Object.assign({}, S.project, {
+      assessments: (S.project.assessments || []).map(a => {
+        const align = Object.assign({}, a.align); delete align._overlayUrl;
+        return Object.assign({}, a, { align });
+      }),
+    });
   }
 
   /* a copy fit to circulate: restricted images withheld (data and hash kept
@@ -211,6 +221,7 @@ AM.Model = (function () {
     const site = clone.project.site;
     if (!site.safe) { site.lat = null; site.lon = null; }
     clone.project.assessments.forEach(a => {
+      if (a.align) delete a.align._overlayUrl;
       ['before', 'after'].forEach(role => {
         const p = a[role];
         if (p && p.consent === 'restricted') {
