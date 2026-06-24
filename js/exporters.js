@@ -260,5 +260,28 @@ AM.Exporters = (function () {
     setTimeout(() => window.print(), 120);
   }
 
-  return { saveProject, publicJSON, printDossier, htmlDossier, printView };
+  /* ---------- a plain account of what an export carries, and what stays ---------- */
+  function releaseSummary() {
+    const p = S.project;
+    const assessments = p.assessments || [];
+    let photosPublished = 0, photosWithheld = 0;
+    assessments.forEach(a => {
+      ['before', 'after'].forEach(role => {
+        const ph = a[role];
+        if (!ph || (!ph.name && !ph.dataUrl && !ph.sha256)) return;
+        if (ph.consent === 'restricted') photosWithheld++; else photosPublished++;
+      });
+    });
+    const site = p.site || {};
+    const hasCoords = site.lat != null && site.lon != null;
+    return {
+      assessments: assessments.length,
+      events: (p.events || []).length,
+      photosPublished, photosWithheld,
+      coordsPublished: hasCoords && !!site.safe,
+      coordsWithheld: hasCoords && !site.safe,
+    };
+  }
+
+  return { saveProject, publicJSON, printDossier, htmlDossier, printView, releaseSummary };
 })();

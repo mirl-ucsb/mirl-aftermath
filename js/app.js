@@ -123,6 +123,40 @@ AM.App = (function () {
     menu.addEventListener('click', e => e.stopPropagation());
   }
 
+  /* ---------- release preview: a deliberate pause before a public export ---------- */
+  function confirmRelease(label, onProceed) {
+    const s = AM.Exporters.releaseSummary();
+    const n = (x, one, many) => x + ' ' + (x === 1 ? one : (many || one + 's'));
+    const line = (box, txt) => box.append(U.h('div', { class: 'rl-line' }, txt));
+    const overlay = U.h('div', { class: 'release-overlay' });
+    function onEsc(ev) { if (ev.key === 'Escape') close(); }
+    const close = () => { overlay.remove(); document.removeEventListener('keydown', onEsc); };
+    const body = U.h('div', { class: 'release-summary' });
+    body.append(U.h('p', { class: 'rl-intro' },
+      'This is what the ' + label + ' carries out of the working dossier. Restricted photographs and unsafe coordinates stay here.'));
+    const pub = U.h('div', { class: 'rl-sec rl-publish' }, U.h('h4', null, 'Leaves in the ' + label));
+    line(pub, n(s.assessments, 'assessment'));
+    line(pub, n(s.events, 'recorded event'));
+    line(pub, n(s.photosPublished, 'photograph') + ' shown');
+    line(pub, s.coordsPublished ? 'Site coordinates, marked safe to publish' : 'Site name only; coordinates withheld');
+    const wh = U.h('div', { class: 'rl-sec rl-withheld' }, U.h('h4', null, 'Stays in the working dossier'));
+    line(wh, n(s.photosWithheld, 'photograph') + ' restricted, shown as withheld');
+    line(wh, s.coordsWithheld ? 'The site coordinates, until marked safe to publish' : 'No held-back coordinates on file');
+    line(wh, 'Every photograph re-encoded; the registered overlay is rebuilt, never stored');
+    body.append(pub, wh);
+    const acts = U.h('div', { class: 'release-actions' });
+    const cancel = U.h('button', { class: 'btn' }, 'Cancel');
+    cancel.addEventListener('click', close);
+    const go = U.h('button', { class: 'btn primary' }, 'Export the ' + label);
+    go.addEventListener('click', () => { close(); onProceed(); });
+    acts.append(cancel, go);
+    overlay.append(U.h('div', { class: 'release-dialog' },
+      U.h('h3', null, 'Before the ' + label + ' leaves'), body, acts));
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', onEsc);
+    document.body.append(overlay);
+  }
+
   /* ---------- boot ---------- */
   function boot() {
     const loaded = AM.Store.load();
@@ -163,9 +197,9 @@ AM.App = (function () {
       const act = btn && btn.dataset.act;
       if (!act) return;
       closeMenus();
-      if (act === 'print') AM.Exporters.printDossier();
-      else if (act === 'html') AM.Exporters.htmlDossier();
-      else if (act === 'json') AM.Exporters.publicJSON();
+      if (act === 'print') confirmRelease('dossier', () => AM.Exporters.printDossier());
+      else if (act === 'html') confirmRelease('HTML dossier', () => AM.Exporters.htmlDossier());
+      else if (act === 'json') confirmRelease('public data file', () => AM.Exporters.publicJSON());
       else if (act === 'printview') AM.Exporters.printView();
     });
 
