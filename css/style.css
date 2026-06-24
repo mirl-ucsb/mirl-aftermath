@@ -128,6 +128,8 @@ select, input[type="text"], input[type="url"], input[type="number"], input[type=
   border-radius: 0; padding: 5px 2px; max-width: 100%;
 }
 select:focus, input:focus, textarea:focus { outline: none; border-bottom: 1.5px solid var(--red); }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+button:focus:not(:focus-visible), a:focus:not(:focus-visible), [tabindex]:focus:not(:focus-visible) { outline: none; }
 input::placeholder, textarea::placeholder { color: var(--ink-3); font-style: italic; }
 textarea { width: 100%; resize: vertical; line-height: 1.6; }
 
