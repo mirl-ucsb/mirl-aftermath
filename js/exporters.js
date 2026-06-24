@@ -229,5 +229,36 @@ AM.Exporters = (function () {
     U.toast('HTML dossier saved');
   }
 
-  return { saveProject, publicJSON, printDossier, htmlDossier };
+  /* ---------- print just the sheet you are on, consent applied ---------- */
+  async function printView() {
+    const route = (AM.state && AM.state.route) || {};
+    const pub = AM.Model.publicClone();
+    const p = pub.project;
+    let html = '';
+    if (route.view === 'assessment' && route.id) {
+      const a = p.assessments.find(x => x.id === route.id);
+      if (a) {
+        await AM.Figure.prepareAll([a]);
+        html = '<div class="book-page"><div class="report-wrap">' +
+          AM.Sheets.reportHTML(a, { caption: captionFor(a, p.events), overlay: a.align && a.align._overlayUrl, publicMode: true, events: p.events }) +
+          '</div></div>';
+      }
+    }
+    if (!html) {
+      html = '<div class="book-page">' + siteSummaryHTML(p, p.assessments) + '</div>';
+    }
+    let book = document.getElementById('book');
+    if (!book) { book = document.createElement('div'); book.id = 'book'; document.body.append(book); }
+    book.innerHTML = html;
+    document.body.classList.add('book-mode');
+    const cleanup = () => {
+      document.body.classList.remove('book-mode');
+      book.innerHTML = '';
+      window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    setTimeout(() => window.print(), 120);
+  }
+
+  return { saveProject, publicJSON, printDossier, htmlDossier, printView };
 })();

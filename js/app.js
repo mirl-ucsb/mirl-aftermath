@@ -166,7 +166,7 @@ AM.App = (function () {
       if (act === 'print') AM.Exporters.printDossier();
       else if (act === 'html') AM.Exporters.htmlDossier();
       else if (act === 'json') AM.Exporters.publicJSON();
-      else if (act === 'printview') window.print();
+      else if (act === 'printview') AM.Exporters.printView();
     });
 
     document.getElementById('project-input').addEventListener('change', e => {
