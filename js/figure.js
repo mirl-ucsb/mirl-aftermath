@@ -143,6 +143,62 @@ AM.Figure = (function () {
     for (const a of list) { try { await prepareComposite(a); } catch (e) { /* leave null */ } }
   }
 
+  /* a standalone, auditable evidence image: the registered onion overlay with
+     each control point drawn (the after target as a ring, the before point
+     projected through the homography as a dot, joined by the residual it
+     leaves), under a header carrying the RMS fit error and the pair count */
+  async function exportEvidence(a) {
+    const al = a.align || {};
+    if (!al.H || !a.before || !a.after || !a.before.dataUrl || !a.after.dataUrl) {
+      return AM.util.toast('Register the pair first: place four or more control-point pairs.');
+    }
+    if (a.before.withheld || a.after.withheld) {
+      return AM.util.toast('A photograph is withheld; the evidence image cannot be built.');
+    }
+    let before, after;
+    try { [before, after] = await Promise.all([loadImage(a.before.dataUrl), loadImage(a.after.dataUrl)]); }
+    catch (e) { return AM.util.toast('Could not load the photographs.'); }
+    const Wd = after.naturalWidth || a.after.natW, Hd = after.naturalHeight || a.after.natH;
+    const max = 1600, k = Math.min(1, max / Math.max(Wd, Hd));
+    const cw = Math.max(1, Math.round(Wd * k)), ch = Math.max(1, Math.round(Hd * k));
+    const headH = Math.max(46, Math.round(ch * 0.05));
+    const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch + headH;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#1c1a14'; ctx.fillRect(0, 0, cw, headH);
+    ctx.save(); ctx.translate(0, headH);
+    ctx.fillStyle = '#e8e6dd'; ctx.fillRect(0, 0, cw, ch);
+    ctx.drawImage(after, 0, 0, cw, ch);
+    const Sk = [k, 0, 0, 0, k, 0, 0, 0, 1];
+    const Hc = H.mat3mul(Sk, al.H);
+    const bw = before.naturalWidth || a.before.natW || 1, bh = before.naturalHeight || a.before.natH || 1;
+    const Sb = [(a.before.natW || bw) / bw, 0, 0, 0, (a.before.natH || bh) / bh, 0, 0, 0, 1];
+    const Hcb = H.mat3mul(Hc, Sb);
+    ctx.globalAlpha = 0.5; warp(ctx, before, Hcb, bw, bh); ctx.globalAlpha = 1;
+    const aPts = al.afterPts || [], bPts = al.beforePts || [], n = Math.min(aPts.length, bPts.length);
+    const r = Math.max(5, cw * 0.006), lw = Math.max(1.5, cw * 0.0016);
+    for (let i = 0; i < n; i++) {
+      const ax = aPts[i][0] * k, ay = aPts[i][1] * k;
+      const proj = H.apply(al.H, bPts[i]), px = proj[0] * k, py = proj[1] * k;
+      ctx.strokeStyle = '#8a2a17'; ctx.lineWidth = lw * 1.4;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(px, py); ctx.stroke();
+      ctx.beginPath(); ctx.arc(px, py, r * 0.45, 0, 2 * Math.PI); ctx.fillStyle = '#8a2a17'; ctx.fill();
+      ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
+      ctx.fillStyle = 'rgba(255,255,255,0.65)'; ctx.fill();
+      ctx.strokeStyle = '#1c1a14'; ctx.lineWidth = lw; ctx.stroke();
+      ctx.fillStyle = '#1c1a14'; ctx.font = '600 ' + Math.max(10, cw * 0.011) + 'px Georgia, serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(i + 1), ax, ay);
+    }
+    ctx.restore();
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    const fs = Math.round(headH * 0.34);
+    ctx.fillStyle = '#f3efe3'; ctx.font = '600 ' + fs + 'px Georgia, serif';
+    ctx.fillText((a.title || a.id || 'Assessment') + ' — registration evidence', cw * 0.018, headH * 0.36);
+    ctx.fillStyle = '#cfc9b6'; ctx.font = Math.round(fs * 0.8) + 'px "Plex Mono", Menlo, monospace';
+    const rms = al.rms != null ? 'RMS ' + al.rms.toFixed(2) + ' px' : 'RMS n/a';
+    ctx.fillText(rms + '   ·   ' + n + ' control pairs   ·   before over after at 50%, residuals in oxide', cw * 0.018, headH * 0.72);
+    cv.toBlob(bl => bl ? AM.util.download(AM.util.slug(a.title || a.id || 'assessment') + '-registration-evidence.png', bl) : AM.util.toast('Export blocked (image CORS).'), 'image/png');
+  }
+
   /* =====================================================================
      The working figure on the desk: place control points, read the fit, scrub
      the compare. One editor exists at a time, for the open assessment.
@@ -410,7 +466,9 @@ AM.Figure = (function () {
           U.h('div', { class: 'big' }, al.rms.toFixed(1)),
           U.h('div', null, U.h('div', null, 'pixel fit error'), U.h('div', { class: 'hint' }, word + ' · ' + n + ' pairs'))));
       }
-      colB.append(U.h('div', { class: 'add-line' }, U.h('button', { class: 'btn', onclick: () => setMode('align') }, 'Adjust points')));
+      colB.append(U.h('div', { class: 'add-line', style: { display: 'flex', gap: '12px', flexWrap: 'wrap' } },
+        U.h('button', { class: 'btn', onclick: () => setMode('align') }, 'Adjust points'),
+        al.H ? U.h('button', { class: 'btn', onclick: () => exportEvidence(ed.a) }, 'Export registration evidence (.png)') : null));
       box.append(colA, colB);
     }
   }
@@ -486,5 +544,5 @@ AM.Figure = (function () {
   }
   function teardown() { if (ed) { clearBlink(); ed = null; } }
 
-  return { figureHTML, prepareComposite, prepareAll, editor, refit, teardown };
+  return { figureHTML, prepareComposite, prepareAll, editor, refit, teardown, exportEvidence };
 })();
