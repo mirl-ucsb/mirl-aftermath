@@ -61,8 +61,9 @@ drawing set.
 **S-01 Site.** The cover of the dossier: what the site is and where, its
 designation and identifier, the dossier's own metadata (reference, assessor,
 organization, contact), and the **events** that harmed it, each a dated cause
-(shelling or airstrike, fire, earthquake, flood, deliberate demolition,
-looting, neglect) with its source. The title block above fills in as you type.
+(shelling or airstrike, explosion, deliberate demolition, fire, earthquake,
+storm, looting, vandalism, neglect, among others, or a cause named in your own
+words) with its source. The title block above fills in as you type.
 
 **S-02 Schedule.** A ruled register of every assessment: number, area, date,
 assessor, damage type, and a stamped severity grade. Click any line to open
@@ -86,11 +87,13 @@ above as you type it, so what you will print is always in view.
   and ICCROM post-event condition surveys: structural collapse, structural
   damage, ballistic or blast, fire or smoke, water or moisture, looting or
   theft, vandalism or defacement, material loss or detachment, cracking or
-  deformation, biological or vegetation, weathering or surface.
+  deformation, biological or vegetation, weathering or surface. When none of
+  these fits, choose other and name the damage in your own words; your wording
+  is what the report and the exports print.
 - **A severity grade**, escalating in the manner of a satellite or field damage
   assessment: none, minor, moderate, severe, destroyed. It is stamped like a
-  checking-pencil mark, blue at the clean end and a filled oxide-red block at
-  the worst.
+  checking-pencil mark, blue at the clean end, the worst grade struck in deep
+  red with a heavier line.
 - **The cause**: which recorded event harmed this element.
 - **Findings**: the condition and damage in your own words, and the
   recommendation (emergency stabilization, salvage, documentation, monitoring).
@@ -316,7 +319,7 @@ a reference in APA or BibTeX form. Every release is archived on
 [`CHANGELOG`](CHANGELOG.md) records each release. In a note, cite it as:
 
 > Jeff O'Brien, *MIRL Aftermath: a condition dossier for damaged heritage*,
-> version 1.0.1, Material / Image Research Lab, UC Santa Barbara, 2026,
+> version 1.0.2, Material / Image Research Lab, UC Santa Barbara, 2026,
 > https://doi.org/10.5281/zenodo.20750368.
 
 ---

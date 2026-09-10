@@ -17,9 +17,9 @@ AM.Exporters = (function () {
     return U.slug(S.project.site.name || S.project.dossier.reference || 'dossier');
   }
   function captionFor(a, events) {
-    const sev = V.severityOf(a.severity), cat = V.damageOf(a.category);
+    const sev = V.severityOf(a.severity);
     const ev = a.eventId && (events || []).find(x => x.id === a.eventId);
-    return [a.area || 'Untitled area', cat.label + ', ' + sev.label.toLowerCase(),
+    return [a.area || 'Untitled area', V.damageLabel(a) + ', ' + sev.label.toLowerCase(),
       a.date || '', a.assessor ? 'assessed by ' + a.assessor : '', ev ? ev.type : '']
       .filter(s => s && s.trim()).join('. ') + '.';
   }

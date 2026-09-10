@@ -5,7 +5,7 @@
    title block (SITE / REF / ASSESSOR / DATE) and numbered like folios with an
    S- prefix (S-01 Site, S-02 Schedule, S-03 Assessment). Damage severity is
    stamped in the manner of a checking pencil, escalating from blue (none)
-   through ink and ochre to oxide red, the worst grade a filled stamp. Figures
+   through ink and ochre to oxide red, the worst grade struck heavier. Figures
    are numbered FIG. n with the caption beneath, like a plate in a book. The
    visual family is the sibling of MIRL Rephoto's drawing sheet: paper ground,
    ink rules, square corners. Type: Spectral (the prose voice), IBM Plex Mono
@@ -39,7 +39,7 @@
   --red: #a93221;         /* red-line / oxide red */
   --accent: #a93221;
   /* the severity ramp, escalating: none reads as a clean blue check, the
-     worst grade a filled deep-red stamp */
+     worst grade a deep-red stamp struck with a heavier line */
   --sev-none: #2d4f6e;
   --sev-minor: #5d5a4d;
   --sev-moderate: #9a6a2c;
@@ -197,13 +197,13 @@ h2.head { font-size: 24px; font-weight: 600; margin: 40px 0 6px; letter-spacing:
 .sv-minor { color: var(--sev-minor); }
 .sv-moderate { color: var(--sev-moderate); }
 .sv-severe { color: var(--sev-severe); }
-/* the worst grade fills: a struck, stamped block, not an outline */
-.sv-destroyed { color: var(--bg); background: var(--sev-destroyed); border-color: var(--sev-destroyed); }
+/* the worst grade strikes heavier: a 2px outline, not a filled block,
+   and it survives printers that drop background colour */
+.sv-destroyed { color: var(--sev-destroyed); border-width: 2px; }
 
 /* interactive stamps (the severity picker on the desk) */
 button.mark { background: transparent; cursor: pointer; }
 button.mark:hover { background: var(--soft); }
-button.mark.sv-destroyed { color: var(--sev-destroyed); background: transparent; }
 button.mark.on.sv-none { background: var(--sev-none); color: var(--bg); border-color: var(--sev-none); }
 button.mark.on.sv-minor { background: var(--sev-minor); color: var(--bg); border-color: var(--sev-minor); }
 button.mark.on.sv-moderate { background: var(--sev-moderate); color: var(--bg); border-color: var(--sev-moderate); }

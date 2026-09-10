@@ -4,6 +4,28 @@ MIRL Aftermath keeps its history the way a survey keeps its record: nothing
 erased, each change dated. Versions follow [semantic versioning](https://semver.org);
 dossier files from any earlier version load cleanly in any later one.
 
+## 1.0.2 (2026-09-10)
+
+- **The DESTROYED stamp is struck as a heavy outline**, not a filled block: the
+  deep red and the weight stay, and the grade survives printers that drop
+  background colour. The severity picker still fills a stamp when pressed.
+- **A cause or a damage in your own words**: the event vocabulary grows
+  (explosion, military use or occupation, storm, landslide, vandalism,
+  unauthorized construction, structural failure), and choosing *other* on
+  either the event type or the damage type opens a field for the assessor's
+  own wording, which is what the report and every export then print.
+- **A release preview before every public export**: what will and will not
+  publish is listed for confirmation first, and *Print this sheet* runs through
+  the same consent-applied path as the other exports.
+- **A standalone registration-evidence image**: the control points and the
+  pixel-fit error drawn over the pair, exportable on its own.
+- Registration hardening: the printed overlay registers against the embedded
+  before-image size, degenerate homographies are guarded, and the transient
+  registered overlay stays out of saved and public files.
+- Accessibility: dialog roles and focus management on the release preview,
+  pressed and current states announced to assistive technology, and a visible
+  keyboard focus ring.
+
 ## 1.0.1 (2026-06-17)
 
 - The repository is archived on [Zenodo](https://zenodo.org) from this release

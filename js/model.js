@@ -48,8 +48,10 @@ AM.util = {
 /* ---------- controlled vocabularies ---------- */
 AM.vocab = {
   /* what happened, drawn from the kinds of event heritage assessments record */
-  EVENTTYPE: ['armed conflict', 'shelling or airstrike', 'fire', 'earthquake', 'flood',
-    'deliberate demolition', 'looting', 'neglect', 'other'],
+  EVENTTYPE: ['armed conflict', 'shelling or airstrike', 'explosion', 'deliberate demolition',
+    'military use or occupation', 'fire', 'earthquake', 'flood', 'storm', 'landslide',
+    'looting', 'vandalism', 'unauthorized construction', 'structural failure',
+    'neglect', 'other'],
 
   /* a damage typology in the manner of ICOMOS / ICCROM post-event condition
      surveys: the categories an assessor assigns to a part of a site */
@@ -85,6 +87,13 @@ AM.vocab = {
   ],
 };
 AM.vocab.damageOf = k => AM.vocab.DAMAGE.find(d => d.key === k) || AM.vocab.DAMAGE[AM.vocab.DAMAGE.length - 1];
+/* the label to print for an assessment's damage type: the assessor's own
+   wording when the type is Other, the typology label otherwise */
+AM.vocab.damageLabel = a => {
+  const d = AM.vocab.damageOf(a && a.category);
+  const own = a && typeof a.categoryOther === 'string' ? a.categoryOther.trim() : '';
+  return d.key === 'other' && own ? own : d.label;
+};
 AM.vocab.severityOf = k => AM.vocab.SEVERITY.find(s => s.key === k) || AM.vocab.SEVERITY[0];
 
 /* ---------- state ---------- */
@@ -122,7 +131,7 @@ AM.Model = (function () {
     return {
       id: 'A-' + String(max + 1).padStart(3, '0'),
       area: '', date: AM.util.today(), assessor: '',
-      category: 'structural', severity: 'moderate',
+      category: 'structural', categoryOther: '', severity: 'moderate',
       eventId: null,
       summary: '', recommendation: '',
       before: AM.blankPhoto(), after: AM.blankPhoto(),
@@ -142,6 +151,7 @@ AM.Model = (function () {
     out.after = normPhoto(a.after);
     out.align = Object.assign({ beforePts: [], afterPts: [], H: null, rms: null }, a.align || {});
     if (!AM.vocab.DAMAGE.some(x => x.key === out.category)) out.category = 'other';
+    if (typeof out.categoryOther !== 'string') out.categoryOther = '';
     if (!AM.vocab.SEVERITY.some(x => x.key === out.severity)) out.severity = 'moderate';
     out.eventId = typeof a.eventId === 'string' && a.eventId ? a.eventId : null;
     return out;

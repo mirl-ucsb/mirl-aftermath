@@ -61,14 +61,14 @@ AM.Sheets = (function () {
     let h = '<table class="register"><tr>' +
       '<th>No.</th><th>Area or element</th><th>Date</th><th>Assessor</th><th>Damage type</th><th>Severity</th></tr>';
     list.forEach(a => {
-      const sev = V.severityOf(a.severity), cat = V.damageOf(a.category);
+      const sev = V.severityOf(a.severity);
       const attr = opts.static ? '' : ' class="entry" data-id="' + e(a.id) + '"';
       h += '<tr' + attr + '>' +
         '<td class="no">' + e(a.id) + '</td>' +
         '<td class="area"' + dirAttr(a.area) + '><span class="t">' + (a.area ? e(a.area) : '<span style="color:var(--ink-3);font-style:italic">untitled</span>') + '</span></td>' +
         '<td class="mono">' + (a.date ? e(a.date) : '-') + '</td>' +
         '<td>' + (a.assessor ? e(a.assessor) : '-') + '</td>' +
-        '<td>' + e(cat.label) + '</td>' +
+        '<td>' + e(V.damageLabel(a)) + '</td>' +
         '<td><span class="mark ' + sev.cls + '">' + cap(sev.key) + '</span></td>' +
         '</tr>';
     });
@@ -105,13 +105,13 @@ AM.Sheets = (function () {
     opts = opts || {};
     const e = U.esc;
     const events = opts.events || S.project.events || [];
-    const sev = V.severityOf(a.severity), cat = V.damageOf(a.category);
+    const sev = V.severityOf(a.severity);
     const ev = a.eventId && events.find(x => x.id === a.eventId);
 
     let h = '<div class="report"><div class="inner">';
     h += '<div class="rp-top"><div class="rp-no">Assessment ' + e(a.id) + '</div>' +
       '<div class="rp-stamp"><span class="mark ' + sev.cls + '">' + cap(sev.key) + '</span>' +
-      '<span class="rp-cat">' + e(cat.label) + '</span></div></div>';
+      '<span class="rp-cat">' + e(V.damageLabel(a)) + '</span></div></div>';
     h += '<h2 class="rp-area"' + dirAttr(a.area) + '>' +
       (a.area ? e(a.area) : '<span class="rp-untitled">Untitled area</span>') + '</h2>';
     const vital = [a.date, a.assessor ? 'assessed by ' + a.assessor : '', ev ? (ev.type || 'event') + (ev.date ? ', ' + ev.date : '') : '']
@@ -217,9 +217,23 @@ AM.Sheets = (function () {
       (S.project.events || []).forEach(ev => {
         const dateI = U.h('input', { type: 'text', value: ev.date || '', placeholder: 'e.g. 14 March 2024', style: { width: '100%' } });
         dateI.addEventListener('input', () => { ev.date = dateI.value; AM.App.projectChanged(); });
+        const knownType = V.EVENTTYPE.includes(ev.type);
         const typeSel = U.h('select', { style: { width: '100%' } },
-          ...V.EVENTTYPE.map(t => U.h('option', { value: t, selected: ev.type === t ? '' : null }, t)));
-        typeSel.addEventListener('change', () => { ev.type = typeSel.value; AM.App.projectChanged(); });
+          ...V.EVENTTYPE.map(t => U.h('option', { value: t, selected: (knownType ? ev.type === t : t === 'other') ? '' : null }, t)));
+        const typeOther = U.h('input', {
+          type: 'text', value: knownType ? '' : (ev.type || ''),
+          placeholder: 'name the event in your own words', dir: 'auto',
+          'aria-label': 'Other event type', style: { width: '100%', marginTop: '6px' },
+        });
+        typeOther.hidden = knownType;
+        typeSel.addEventListener('change', () => {
+          const other = typeSel.value === 'other';
+          typeOther.hidden = !other;
+          ev.type = other ? (typeOther.value.trim() || 'other') : typeSel.value;
+          AM.App.projectChanged();
+          if (other) typeOther.focus();
+        });
+        typeOther.addEventListener('input', () => { ev.type = typeOther.value.trim() || 'other'; AM.App.projectChanged(); });
         const srcI = U.h('input', { type: 'text', value: ev.source || '', placeholder: 'source: a report, a witness, a bulletin', dir: 'auto', style: { width: '100%' } });
         srcI.addEventListener('input', () => { ev.source = srcI.value; AM.App.projectChanged(); });
         const noteI = U.h('input', { type: 'text', value: ev.note || '', placeholder: 'what happened', dir: 'auto', style: { width: '100%' } });
@@ -227,7 +241,7 @@ AM.Sheets = (function () {
         const body = U.h('div', { class: 'evbody' },
           U.h('div', { class: 'row2' },
             U.h('div', { class: 'field', style: { marginBottom: '12px' } }, U.h('label', null, 'Date'), dateI),
-            U.h('div', { class: 'field', style: { marginBottom: '12px' } }, U.h('label', null, 'Type'), typeSel)),
+            U.h('div', { class: 'field', style: { marginBottom: '12px' } }, U.h('label', null, 'Type'), typeSel, typeOther)),
           U.h('div', { class: 'field', style: { marginBottom: '12px' } }, U.h('label', null, 'Source'), srcI),
           U.h('div', { class: 'field', style: { marginBottom: '0' } }, U.h('label', null, 'Note'), noteI));
         box.append(U.h('div', { class: 'event-row' },
@@ -400,7 +414,19 @@ AM.Sheets = (function () {
     /* classification */
     const catSel = U.h('select', null, ...V.DAMAGE.map(d =>
       U.h('option', { value: d.key, selected: a.category === d.key ? '' : null }, d.label)));
-    catSel.addEventListener('change', () => { a.category = catSel.value; AM.App.changed(a, true); });
+    const catOther = U.h('input', {
+      type: 'text', value: a.categoryOther || '',
+      placeholder: 'name the damage in your own words', dir: 'auto',
+      'aria-label': 'Other damage type', style: { width: '100%', marginTop: '6px' },
+    });
+    catOther.hidden = a.category !== 'other';
+    catSel.addEventListener('change', () => {
+      a.category = catSel.value;
+      catOther.hidden = a.category !== 'other';
+      AM.App.changed(a, true);
+      if (!catOther.hidden) catOther.focus();
+    });
+    catOther.addEventListener('input', () => { a.categoryOther = catOther.value; AM.App.changed(a, true); });
 
     const sevPick = U.h('div', { class: 'marks-pick' });
     V.SEVERITY.forEach(sv => {
@@ -421,7 +447,7 @@ AM.Sheets = (function () {
     evSel.addEventListener('change', () => { a.eventId = evSel.value || null; AM.App.changed(a); });
 
     desk.append(sect('Classification', 'the damage typology and its grade',
-      U.h('div', { class: 'field' }, U.h('label', null, 'Damage type'), catSel),
+      U.h('div', { class: 'field' }, U.h('label', null, 'Damage type'), catSel, catOther),
       U.h('div', { class: 'field' }, U.h('label', null, 'Severity'), sevPick),
       U.h('div', { class: 'field' }, U.h('label', null, 'Caused by'), evSel,
         U.h('div', { class: 'note' }, (S.project.events || []).length
