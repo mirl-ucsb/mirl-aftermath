@@ -27,11 +27,17 @@ open it and begin. It is a static page that receives nothing; your dossier
 stays in your browser and in the files you save. If you would rather run your
 own copy, this repository is a template (see [Making it your own](#making-it-your-own)).
 
-It is a sibling to [MIRL Rephoto](https://github.com/mirl-ucsb/mirl-rephoto),
-which aligns a then-and-now pair and measures from it, and to
-[MIRL Lacuna](https://github.com/mirl-ucsb/mirl-lacuna), which catalogues works
-that no longer exist. Where Lacuna records what is gone, Aftermath documents
-damage to what still stands.
+Aftermath is one of four MIRL instruments for heritage after crisis, built to
+work alone or in sequence: [rescue-archiving](https://github.com/mirl-ucsb/rescue-archiving)
+makes a verifiable copy of at-risk online media before it disappears, Aftermath
+builds the condition dossier for damage to what still stands,
+[MIRL Lacuna](https://github.com/mirl-ucsb/mirl-lacuna) catalogues what is
+gone, and the [MIRL 3D Analyzer](https://github.com/mirl-ucsb/mirl-3d-analyzer)
+measures what survives. Each keeps its exports plain and portable, so work
+moves between the tools without lock-in. The four together:
+[mirl.arthistory.ucsb.edu/mirl-tools](https://mirl.arthistory.ucsb.edu/mirl-tools/).
+It is also a sibling to [MIRL Rephoto](https://github.com/mirl-ucsb/mirl-rephoto),
+which aligns a then-and-now pair and measures from it.
 
 ---
 
