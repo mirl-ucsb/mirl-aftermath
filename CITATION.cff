@@ -20,8 +20,8 @@ authors:
     affiliation: >-
       Material / Image Research Lab, Department of History of Art &
       Architecture, University of California, Santa Barbara
-version: "1.0.2"
-date-released: "2026-09-10"
+version: "1.1.0"
+date-released: "2026-11-05"
 doi: 10.5281/zenodo.20750368
 license: MIT
 repository-code: "https://github.com/mirl-ucsb/mirl-aftermath"

@@ -1,10 +1,10 @@
 /* sheets.js: the survey sheets and their live forms.
 
-   Three sheets, numbered like folios:
-   - S-01 Site: the title block, the site and dossier metadata, and the events
+   Three sheets (the internal codes S-01 to S-03 are never shown):
+   - Site: the title block, the site and dossier metadata, and the events
      that harmed the site.
-   - S-02 Schedule: a ruled register of every assessment.
-   - S-03 Assessment: one condition report, rendered above its working form (the
+   - Schedule: a ruled register of every assessment.
+   - Assessment: one condition report, rendered above its working form (the
      desk), in the manner of MIRL Lacuna's record page: every keystroke on the
      desk updates the report above, so what you will print is always in view.
 
@@ -42,11 +42,10 @@ AM.Sheets = (function () {
     h += '<div class="tb-org">' + e(org) + '</div>';
     h += '<div class="tb-title"' + dirAttr(s.name) + '>' +
       (s.name ? e(s.name) : '<span class="tb-untitled">Untitled site</span>') +
-      (s.designation ? ' <span style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)">· ' + e(s.designation) + '</span>' : '') +
+      (s.designation ? ' <span style="font-family:var(--sans);font-size:15px;font-weight:400;letter-spacing:0;color:var(--ink-3)">·&nbsp;' + e(s.designation) + '</span>' : '') +
       '</div>';
     h += '<div class="tb-cells">';
-    h += '<div class="tb-cell"><span>Sheet</span><b class="sheetno">' + e(sheetNo) +
-      '</b><b style="font-weight:400;color:var(--ink-2);margin-left:8px">' + e(sheetName) + '</b></div>';
+    h += '<div class="tb-cell"><span>Sheet</span><b>' + e(sheetName) + '</b></div>';
     h += cell('Reference', d.reference);
     h += cell('Assessor', d.assessor);
     h += cell('Dossier date', date);
@@ -360,7 +359,7 @@ AM.Sheets = (function () {
     const redraw = () => {
       box.innerHTML = '';
       box.append(U.h('div', { class: 'item-head', style: { display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '10px' } },
-        U.h('span', { class: 'n', style: { fontFamily: 'var(--mono)', fontSize: '12.5px', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '.1em' } },
+        U.h('span', { class: 'n', style: { fontSize: '14px', fontWeight: '600', color: role === 'before' ? 'var(--blue)' : 'var(--red)' } },
           role === 'before' ? 'Before' : 'After')));
       const row = U.h('div', { style: { display: 'flex', gap: '14px', alignItems: 'baseline', flexWrap: 'wrap', marginBottom: '12px' } });
       row.append(U.h('button', { class: 'btn', onclick: () => attachPhoto(a, role) }, ph.dataUrl ? 'Replace image' : 'Attach image'));
@@ -451,8 +450,8 @@ AM.Sheets = (function () {
       U.h('div', { class: 'field' }, U.h('label', null, 'Severity'), sevPick),
       U.h('div', { class: 'field' }, U.h('label', null, 'Caused by'), evSel,
         U.h('div', { class: 'note' }, (S.project.events || []).length
-          ? 'Which event harmed this element. Events are kept on the Site sheet (S-01).'
-          : 'No events yet. Record the cause on the Site sheet (S-01), then assign it here.'))));
+          ? 'Which event harmed this element. Events are kept on the Site sheet.'
+          : 'No events yet. Record the cause on the Site sheet, then assign it here.'))));
 
     /* findings */
     desk.append(sect('Findings', 'in your own words',

@@ -84,7 +84,7 @@ AM.Exporters = (function () {
     }
     /* the events that harmed the site, in full */
     if ((p.events || []).length) {
-      h += '<h3 style="font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin:26px 0 10px;color:var(--ink)">Events</h3>';
+      h += '<h3 style="font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-0.01em;margin:28px 0 10px;color:var(--ink)">Events</h3>';
       h += '<table class="register"><tr><th>Event</th><th>Type</th><th>Date</th><th>Note</th></tr>';
       p.events.forEach(ev => {
         h += '<tr><td class="no">' + e(ev.id) + '</td><td>' + e(ev.type || '') + '</td>' +
@@ -95,7 +95,7 @@ AM.Exporters = (function () {
       h += '</table>';
     }
     /* the reckoning: a tally by severity */
-    h += '<h3 style="font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin:26px 0 10px;color:var(--ink)">By severity</h3>';
+    h += '<h3 style="font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-0.01em;margin:28px 0 10px;color:var(--ink)">By severity</h3>';
     h += '<table class="register"><tr><th>Grade</th><th>Assessments</th></tr>';
     V.SEVERITY.forEach(sv => {
       const n = list.filter(a => a.severity === sv.key).length;
@@ -217,8 +217,8 @@ AM.Exporters = (function () {
     });
     body += '<div style="margin-top:40px">' + appendixHTML(p, list) + '</div>';
     body += '</div></main>';
-    body += '<footer style="padding:50px 44px 60px;text-align:center"><div class="fm-line" style="margin:0">' +
-      'Compiled ' + e(todayLong()) + ' with MIRL Aftermath · Material / Image Research Lab, UC Santa Barbara</div></footer>';
+    body += '<footer class="app-foot" style="margin-top:56px"><div class="in"><span>' +
+      'Compiled ' + e(todayLong()) + ' with MIRL Aftermath.</span><span>Material / Image Research Lab, UC Santa Barbara.</span></div></footer>';
 
     const html = '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n' +
       '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +

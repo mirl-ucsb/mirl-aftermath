@@ -164,7 +164,7 @@ AM.Figure = (function () {
     const headH = Math.max(46, Math.round(ch * 0.05));
     const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch + headH;
     const ctx = cv.getContext('2d');
-    ctx.fillStyle = '#1c1a14'; ctx.fillRect(0, 0, cw, headH);
+    ctx.fillStyle = '#1d1b18'; ctx.fillRect(0, 0, cw, headH);
     ctx.save(); ctx.translate(0, headH);
     ctx.fillStyle = '#e8e6dd'; ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(after, 0, 0, cw, ch);
@@ -179,23 +179,23 @@ AM.Figure = (function () {
     for (let i = 0; i < n; i++) {
       const ax = aPts[i][0] * k, ay = aPts[i][1] * k;
       const proj = H.apply(al.H, bPts[i]), px = proj[0] * k, py = proj[1] * k;
-      ctx.strokeStyle = '#8a2a17'; ctx.lineWidth = lw * 1.4;
+      ctx.strokeStyle = '#a3172f'; ctx.lineWidth = lw * 1.4;
       ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(px, py); ctx.stroke();
-      ctx.beginPath(); ctx.arc(px, py, r * 0.45, 0, 2 * Math.PI); ctx.fillStyle = '#8a2a17'; ctx.fill();
+      ctx.beginPath(); ctx.arc(px, py, r * 0.45, 0, 2 * Math.PI); ctx.fillStyle = '#a3172f'; ctx.fill();
       ctx.beginPath(); ctx.arc(ax, ay, r, 0, 2 * Math.PI);
       ctx.fillStyle = 'rgba(255,255,255,0.65)'; ctx.fill();
-      ctx.strokeStyle = '#1c1a14'; ctx.lineWidth = lw; ctx.stroke();
-      ctx.fillStyle = '#1c1a14'; ctx.font = '600 ' + Math.max(10, cw * 0.011) + 'px Georgia, serif';
+      ctx.strokeStyle = '#1d1b18'; ctx.lineWidth = lw; ctx.stroke();
+      ctx.fillStyle = '#1d1b18'; ctx.font = '600 ' + Math.max(10, cw * 0.011) + 'px "Epilogue", Arial, sans-serif';
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(i + 1), ax, ay);
     }
     ctx.restore();
     ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
     const fs = Math.round(headH * 0.34);
-    ctx.fillStyle = '#f3efe3'; ctx.font = '600 ' + fs + 'px Georgia, serif';
-    ctx.fillText((a.title || a.id || 'Assessment') + ' — registration evidence', cw * 0.018, headH * 0.36);
-    ctx.fillStyle = '#cfc9b6'; ctx.font = Math.round(fs * 0.8) + 'px "Plex Mono", Menlo, monospace';
+    ctx.fillStyle = '#fefaf0'; ctx.font = '600 ' + fs + 'px "Familjen Grotesk", Arial, sans-serif';
+    ctx.fillText((a.title || a.id || 'Assessment') + ' · registration evidence', cw * 0.018, headH * 0.36);
+    ctx.fillStyle = '#d6d0c0'; ctx.font = Math.round(fs * 0.8) + 'px "Epilogue", Arial, sans-serif';
     const rms = al.rms != null ? 'RMS ' + al.rms.toFixed(2) + ' px' : 'RMS n/a';
-    ctx.fillText(rms + '   ·   ' + n + ' control pairs   ·   before over after at 50%, residuals in oxide', cw * 0.018, headH * 0.72);
+    ctx.fillText(rms + '   ·   ' + n + ' control pairs   ·   before over after at 50%, residuals in red', cw * 0.018, headH * 0.72);
     cv.toBlob(bl => bl ? AM.util.download(AM.util.slug(a.title || a.id || 'assessment') + '-registration-evidence.png', bl) : AM.util.toast('Export blocked (image CORS).'), 'image/png');
   }
 
@@ -233,7 +233,7 @@ AM.Figure = (function () {
     const ph = ed.a[role];
     const head = U.h('div', { class: 'panel-head' },
       U.h('span', { class: 'swatch', style: { background: role === 'before' ? 'var(--blue)' : 'var(--red)' } }),
-      U.h('span', { class: 'pname' }, (role === 'before' ? 'BEFORE' : 'AFTER') + (ph && ph.name ? '  ·  ' + ph.name : '')),
+      U.h('span', { class: 'pname' }, (role === 'before' ? 'Before' : 'After') + (ph && ph.name ? ' · ' + ph.name : '')),
       U.h('span', { style: { flex: '1' } }),
       st.img ? U.h('button', { class: 'btn', onclick: () => AM.Sheets.attachPhoto(ed.a, role) }, 'Replace') : null);
     const p = U.h('div', { class: 'imgpanel', id: 'fig-panel-' + role }, head, img, dots);
@@ -297,7 +297,7 @@ AM.Figure = (function () {
   function onPanelClick(role, e, p) {
     if (ed.mode !== 'align' || !ed[role].img) return;
     if (e.target.closest('.dot')) return;
-    if (role !== ed.nextSide) { U.toast('Place point ' + (Math.min(pts('before').length, pts('after').length) + 1) + ' on the ' + ed.nextSide.toUpperCase() + ' image next.'); return; }
+    if (role !== ed.nextSide) { U.toast('Place point ' + (Math.min(pts('before').length, pts('after').length) + 1) + ' on the ' + ed.nextSide + ' image next.'); return; }
     const fit = ed[role]._fit; const r = p.getBoundingClientRect();
     const x = (e.clientX - r.left - fit.ox) / fit.s, y = (e.clientY - r.top - fit.oy) / fit.s;
     if (x < 0 || y < 0 || x > ed[role].natW || y > ed[role].natH) return;
@@ -418,7 +418,7 @@ AM.Figure = (function () {
       } else {
         colA.append(U.h('div', { class: 'hint' },
           U.h('b', null, 'Place four or more point pairs.'),
-          ' Click a feature on the BEFORE image, then the same feature on the AFTER. Corners of windows, doorframes, and string courses work well. ' + n + ' pair' + (n === 1 ? '' : 's') + ' so far.'));
+          ' Click a feature on the before image, then the same feature on the after. Corners of windows, doorframes, and string courses work well. ' + n + ' pair' + (n === 1 ? '' : 's') + ' so far.'));
       }
       colA.append(U.h('div', { class: 'add-line', style: { display: 'flex', gap: '14px' } },
         U.h('button', { class: 'btn', onclick: clearPoints }, 'Clear points')));
@@ -434,7 +434,7 @@ AM.Figure = (function () {
             U.h('td', { class: 'del', title: 'Delete pair', onclick: () => deletePair(i) }, '×')));
         }
         colB.append(U.h('table', { class: 'pairtable' },
-          U.h('tr', null, U.h('th', null, '#'), U.h('th', null, 'before'), U.h('th', null, 'after'), U.h('th', null, '')),
+          U.h('tr', null, U.h('th', null, '#'), U.h('th', null, 'Before'), U.h('th', null, 'After'), U.h('th', null, '')),
           ...rows));
       }
       box.append(colA, colB);

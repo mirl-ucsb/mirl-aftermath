@@ -4,6 +4,33 @@ MIRL Aftermath keeps its history the way a survey keeps its record: nothing
 erased, each change dated. Versions follow [semantic versioning](https://semver.org);
 dossier files from any earlier version load cleanly in any later one.
 
+## 1.1.0 (2026-11-05)
+
+Aftermath takes the lab's own identity. Nothing about how a dossier is kept,
+registered, or released changes; dossier files from every earlier version open
+as before.
+
+- **The MIRL identity.** Familjen Grotesk for names and headings and Epilogue
+  for everything you read and operate, the same faces as the Material /
+  Image Research Lab's site, on the lab's paper white. Aftermath's key is the
+  teal of the MIRL Risograph mark, shown as a soft bloom beside its name;
+  red stays reserved for damage, and in every figure blue is before and red is
+  after. Both typefaces are vendored in `fonts/` under the SIL Open Font
+  License, with their licence texts.
+- **Plain words.** Labels, buttons, and severity grades are set in sentence
+  case; the sheet codes (S-01 to S-03) and the stamped capitals are gone. The
+  sheets are simply Site, Schedule, and Assessment.
+- **Severity you can read.** Each grade is a tinted tag that says its name,
+  escalating from blue through grey and amber to red, with Destroyed in deep
+  red under a heavier outline that survives printing without backgrounds.
+  Every text colour meets WCAG AA (4.5 to 1 or better).
+- **A clearer bar.** One sticky line carries the mark, the sheets, and the
+  actions, with New assessment as the single filled button.
+- **The exports follow.** The self-contained HTML dossier, the printed
+  dossier, and the registration-evidence image are set in the new faces.
+- **Phones.** The schedule scrolls within itself, the source lines stack, and
+  the bar wraps into a row of sheets.
+
 ## 1.0.2 (2026-09-10)
 
 - **The DESTROYED stamp is struck as a heavy outline**, not a filled block: the

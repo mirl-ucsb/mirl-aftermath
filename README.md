@@ -60,23 +60,22 @@ which aligns a then-and-now pair and measures from it.
 
 ## The three sheets
 
-The dossier is a small set of survey sheets, numbered like folios and headed
-by a title block (SITE / REFERENCE / ASSESSOR / DATE), in the manner of a
-drawing set.
+The dossier is a small set of survey sheets, each headed by a title block
+(sheet, reference, assessor, date), in the manner of a drawing set.
 
-**S-01 Site.** The cover of the dossier: what the site is and where, its
+**Site.** The cover of the dossier: what the site is and where, its
 designation and identifier, the dossier's own metadata (reference, assessor,
 organization, contact), and the **events** that harmed it, each a dated cause
 (shelling or airstrike, explosion, deliberate demolition, fire, earthquake,
 storm, looting, vandalism, neglect, among others, or a cause named in your own
 words) with its source. The title block above fills in as you type.
 
-**S-02 Schedule.** A ruled register of every assessment: number, area, date,
-assessor, damage type, and a stamped severity grade. Click any line to open
+**Schedule.** A ruled register of every assessment: number, area, date,
+assessor, damage type, and its severity grade. Click any line to open
 it; begin a new assessment from here or from anywhere.
 
-**S-03 Assessment.** One condition report, rendered above its working form. The
-report carries the assessment number, a severity stamp, the damage type, the
+**Assessment.** One condition report, rendered above its working form. The
+report carries the assessment number, the severity grade, the damage type, the
 before-and-after figure, the condition summary, the recommendation, and the two
 source photographs with their fingerprints. Below it sits **the assessor's
 desk**, the working form, and everything you set there appears in the report
@@ -97,9 +96,10 @@ above as you type it, so what you will print is always in view.
   these fits, choose other and name the damage in your own words; your wording
   is what the report and the exports print.
 - **A severity grade**, escalating in the manner of a satellite or field damage
-  assessment: none, minor, moderate, severe, destroyed. It is stamped like a
-  checking-pencil mark, blue at the clean end, the worst grade struck in deep
-  red with a heavier line.
+  assessment: none, minor, moderate, severe, destroyed. Each grade is a tinted
+  tag that names itself in words, blue at the clean end through grey and amber
+  to red, the worst grade in deep red with a heavier outline that survives a
+  printer that drops background colour.
 - **The cause**: which recorded event harmed this element.
 - **Findings**: the condition and damage in your own words, and the
   recommendation (emergency stabilization, salvage, documentation, monitoring).
@@ -292,7 +292,14 @@ To regenerate the sample, run `python3 samples/make-samples.py` (needs
   data URLs, so the single file stands alone.
 - **Right-to-left scripts** are handled with `dir="auto"` on inputs and
   per-string direction detection in the rendered sheets; Arabic is set in Noto
-  Naskh Arabic, vendored alongside Spectral and IBM Plex Mono in `fonts/`.
+  Naskh Arabic, vendored alongside Familjen Grotesk, Epilogue, and IBM Plex
+  Mono in `fonts/`.
+- **The design** is the Material / Image Research Lab's own identity, shared
+  with the lab site and every MIRL tool: Familjen Grotesk for names and
+  headings, Epilogue for text, the lab's paper white, and Aftermath's key in
+  the teal of the MIRL Risograph mark (red is kept for damage: in a figure,
+  blue is before and red is after). Every text colour meets WCAG AA. All
+  typefaces are under the SIL Open Font License; their texts sit in `fonts/`.
 - **No data leaves your machine.** Everything runs in the browser. The tool
   makes no network requests of its own.
 
@@ -301,7 +308,7 @@ To regenerate the sample, run `python3 samples/make-samples.py` (needs
 ```
 mirl-aftermath/
 ├── index.html          # the page
-├── css/style.css       # the survey-report design system
+├── css/style.css       # the MIRL design system, Aftermath's teal key
 ├── js/
 │   ├── homography.js   # the projective transform (vendored, pure JS)
 │   ├── model.js        # vocabularies, state, autosave, sha-256
@@ -309,7 +316,7 @@ mirl-aftermath/
 │   ├── sheets.js       # the site, schedule, and assessment sheets
 │   ├── exporters.js    # the printed dossier, HTML dossier, public JSON
 │   └── app.js          # routes, menus, dossier open and save, wiring
-├── fonts/              # Spectral, IBM Plex Mono, Noto Naskh Arabic (woff2)
+├── fonts/              # Familjen Grotesk, Epilogue, IBM Plex Mono, Noto Naskh Arabic (woff2, with licences)
 └── samples/            # the fictional shrine dossier + its generator
 ```
 
@@ -325,12 +332,12 @@ a reference in APA or BibTeX form. Every release is archived on
 [`CHANGELOG`](CHANGELOG.md) records each release. In a note, cite it as:
 
 > Jeff O'Brien, *MIRL Aftermath: a condition dossier for damaged heritage*,
-> version 1.0.2, Material / Image Research Lab, UC Santa Barbara, 2026,
+> version 1.1.0, Material / Image Research Lab, UC Santa Barbara, 2026,
 > https://doi.org/10.5281/zenodo.20750368.
 
 ---
 
 Built at the [Material / Image Research Lab](https://mirl.arthistory.ucsb.edu),
 Department of History of Art & Architecture, UC Santa Barbara. Released under
-the MIT License. Spectral, IBM Plex Mono, and Noto Naskh Arabic are under the
-SIL Open Font License.
+the MIT License. Familjen Grotesk, Epilogue, IBM Plex Mono, and Noto Naskh
+Arabic are under the SIL Open Font License.
